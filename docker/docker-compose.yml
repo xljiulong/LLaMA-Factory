@@ -1,6 +1,6 @@
 version: '3'
 services:
-  llm-step-by-step-test-compose:
+  llama-factory:
     build:
       context: ../
       dockerfile: docker/llm_torch2.0.1_cuda11.7.dockerfile
