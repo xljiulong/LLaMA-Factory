@@ -7,9 +7,8 @@ services:
       context: .
     container_name: llama_factory
     volumes:
-      - ./hf_cache:/root/.cache/huggingface/
-      - ./data:/app/data
-      - ./output:/app/output
+      - /home/zhangjl19/models/huggingface:/root/.cache/huggingface/
+      - /home/zhangjl19:/workspace
     environment:
       - CUDA_VISIBLE_DEVICES=0
     ports:
