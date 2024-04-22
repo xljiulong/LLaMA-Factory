@@ -1,0 +1,24 @@
+version: '3'
+services:
+  llm-step-by-step-test-compose:
+    build:
+      context: ../
+      dockerfile: docker/llm_torch2.0.1_cuda11.7.dockerfile
+    image: llama_factory:0.0.1
+    runtime: nvidia
+    container_name: llama_factory
+    tty: true
+    restart: always
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    shm_size: 40G
+    volumes:
+      - /home/zhangjl19/models/huggingface:/root/.cache/huggingface/
+      - /home/zhangjl19:/workspace
+    networks:
+      - test-net
+      
+networks:
+  test-net:
+    external: true
