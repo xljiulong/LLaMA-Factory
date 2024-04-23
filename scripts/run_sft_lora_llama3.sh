@@ -24,7 +24,7 @@ WANDB_DISABLED=1 NCCL_P2P_DISABLE=1 NCCL_IB_DISABLE=1 deepspeed --num_gpus 2 --m
     --evaluation_strategy steps \
     --load_best_model_at_end \
     --learning_rate 5e-5 \
-    --num_train_epochs 10.0 \
+    --num_train_epochs 1.0 \
     --max_samples 3000 \
     --val_size 0.1 \
     --plot_loss \
