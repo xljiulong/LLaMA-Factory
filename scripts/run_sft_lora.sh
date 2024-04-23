@@ -1,7 +1,7 @@
-WANDB_DISABLED=1 NCCL_P2P_DISABLE=1 NCCL_IB_DISABLE=1 deepspeed --num_gpus 2 --master_port=9527 /workspace/projects/LLaMA-Factory/src/train_bash.py \
+WANDB_DISABLED=1 NCCL_P2P_DISABLE=1 NCCL_IB_DISABLE=1 --disable-model-loading-ram-optimization deepspeed --num_gpus 2 --master_port=9527 /workspace/projects/LLaMA-Factory/src/train_bash.py \
     --stage sft \
     --do_train \
-    --deepspeed /workspace/projects/LLaMA-Factory/examples/deepspeed/ds_z3_offload_config.json \
+    --deepspeed /workspace/projects/LLaMA-Factory/examples/deepspeed/ds_z3_config.json \
     --model_name_or_path /workspace/models/huggingface/chatglm3-6b \
     --dataset alpaca_gpt4_zh \
     --dataset_dir /workspace/projects/LLaMA-Factory/data \

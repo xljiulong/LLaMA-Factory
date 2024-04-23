@@ -168,7 +168,7 @@
                 "20",
                 "--save_steps",
                 "100",
-                "-eval_steps",
+                "--eval_steps",
                 "100",
                 "--evaluation_strategy",
                 "steps",

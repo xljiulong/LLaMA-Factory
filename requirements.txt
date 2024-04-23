@@ -16,4 +16,6 @@ fastapi
 sse-starlette
 matplotlib
 fire
-
+qwen
+bitsandbytes
+metrics
