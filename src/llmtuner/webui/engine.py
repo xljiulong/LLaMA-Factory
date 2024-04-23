@@ -1,6 +1,4 @@
-from typing import Any, Dict, Generator
-
-from gradio.components import Component  # cannot use TYPE_CHECKING here
+from typing import TYPE_CHECKING, Any, Dict
 
 from .chatter import WebChatModel
 from .common import get_model_path, list_dataset, load_config
@@ -8,6 +6,10 @@ from .locales import LOCALES
 from .manager import Manager
 from .runner import Runner
 from .utils import get_time
+
+
+if TYPE_CHECKING:
+    from gradio.components import Component
 
 
 class Engine:
@@ -29,7 +31,7 @@ class Engine:
 
         return output_dict
 
-    def resume(self) -> Generator[Dict[Component, Component], None, None]:
+    def resume(self):
         user_config = load_config() if not self.demo_mode else {}
         lang = user_config.get("lang", None) or "en"
 
@@ -55,7 +57,7 @@ class Engine:
             else:
                 yield self._update_component({"eval.resume_btn": {"value": True}})
 
-    def change_lang(self, lang: str) -> Dict[Component, Component]:
+    def change_lang(self, lang: str):
         return {
             elem: elem.__class__(**LOCALES[elem_name][lang])
             for elem_name, elem in self.manager.get_elem_iter()

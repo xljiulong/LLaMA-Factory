@@ -17,7 +17,7 @@ from ..extras.logging import get_logger
 from ..extras.misc import get_current_device, infer_optim_dtype
 from ..extras.packages import is_flash_attn2_available
 from ..extras.patches.llama_patch import apply_llama_patch
-from .utils import QuantizationMethod, add_z3_leaf_module
+from .utils import QuantizationMethod, add_z3_leaf_module, gradient_checkpointing_enable
 
 
 if TYPE_CHECKING:
@@ -61,9 +61,7 @@ def _get_quantization_dataset(tokenizer: "PreTrainedTokenizer", model_args: "Mod
     return samples
 
 
-def _configure_attn_implementation(
-    config: "PretrainedConfig", model_args: "ModelArguments", init_kwargs: Dict[str, Any]
-) -> None:
+def _configure_attn_implementation(config: "PretrainedConfig", model_args: "ModelArguments") -> None:
     if model_args.flash_attn:
         if not is_flash_attn2_available():
             logger.warning("FlashAttention2 is not installed.")
@@ -73,9 +71,9 @@ def _configure_attn_implementation(
         if getattr(config, "model_type", None) == "internlm2":  # special case for custom models
             setattr(config, "attn_implementation", "flash_attention_2")
         else:
-            init_kwargs["attn_implementation"] = "flash_attention_2"
+            setattr(config, "_attn_implementation", "flash_attention_2")
     else:
-        init_kwargs["attn_implementation"] = "eager"
+        setattr(config, "_attn_implementation", "eager")
 
 
 def _configure_rope(config: "PretrainedConfig", model_args: "ModelArguments", is_trainable: bool) -> None:
@@ -141,6 +139,7 @@ def _configure_quantization(
 
         if quant_method == QuantizationMethod.GPTQ:
             require_version("auto_gptq>=0.5.0", "To fix: pip install auto_gptq>=0.5.0")
+            quantization_config.pop("disable_exllama", None)  # remove deprecated args
             quantization_config["use_exllama"] = False  # disable exllama
 
         if quant_method == QuantizationMethod.AWQ:
@@ -268,8 +267,8 @@ def _prepare_model_for_training(
         else:
             # use_reentrant=False might increase VRAM usage (have not been empirically verified yet)
             # According to: https://github.com/huggingface/transformers/issues/28339
+            model.gradient_checkpointing_enable = MethodType(gradient_checkpointing_enable, model)
             model.gradient_checkpointing_enable(gradient_checkpointing_kwargs={"use_reentrant": True})
-            model.enable_input_require_grads()
             setattr(model.config, "use_cache", False)  # turn off when gradient checkpointing is enabled
             logger.info("Gradient checkpointing enabled.")
 
@@ -295,7 +294,7 @@ def patch_config(
     if model_args.compute_dtype is None:  # priority: bf16 > fp16 > fp32
         model_args.compute_dtype = infer_optim_dtype(model_dtype=getattr(config, "torch_dtype", None))
 
-    _configure_attn_implementation(config, model_args, init_kwargs)
+    _configure_attn_implementation(config, model_args)
     _configure_rope(config, model_args, is_trainable)
     _configure_longlora(config, model_args, is_trainable)
     _configure_quantization(config, tokenizer, model_args, init_kwargs)

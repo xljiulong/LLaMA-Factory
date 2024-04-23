@@ -82,11 +82,20 @@ def _check_extra_dependencies(
     if model_args.use_unsloth:
         require_version("unsloth", "Please install unsloth: https://github.com/unslothai/unsloth")
 
+    if model_args.mixture_of_depths is not None:
+        require_version("mixture-of-depth>=1.1.6", "To fix: pip install mixture-of-depth>=1.1.6")
+
     if model_args.infer_backend == "vllm":
         require_version("vllm>=0.3.3", "To fix: pip install vllm>=0.3.3")
 
     if finetuning_args.use_galore:
         require_version("galore_torch", "To fix: pip install galore_torch")
+
+    if finetuning_args.use_badam:
+        require_version("badam", "To fix: pip install badam")
+
+    if finetuning_args.plot_loss:
+        require_version("matplotlib", "To fix: pip install matplotlib")
 
     if training_args is not None and training_args.predict_with_generate:
         require_version("jieba", "To fix: pip install jieba")
@@ -171,8 +180,15 @@ def get_train_args(args: Optional[Dict[str, Any]] = None) -> _TRAIN_CLS:
     ):
         raise ValueError("Distributed training does not support layer-wise GaLore.")
 
-    if finetuning_args.use_galore and training_args.deepspeed is not None:
-        raise ValueError("GaLore is incompatible with DeepSpeed.")
+    if (
+        finetuning_args.use_badam
+        and finetuning_args.badam_mode == "layer"
+        and training_args.parallel_mode.value == "distributed"
+    ):
+        raise ValueError("Layer-wise BAdam does not yet support distributed training, use ratio-wise BAdam.")
+
+    if (finetuning_args.use_galore or finetuning_args.use_badam) and training_args.deepspeed is not None:
+        raise ValueError("GaLore and BAdam are incompatible with DeepSpeed yet.")
 
     if model_args.infer_backend == "vllm":
         raise ValueError("vLLM backend is only available for API, CLI and Web.")

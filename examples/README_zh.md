@@ -3,7 +3,7 @@
 ```
 examples/
 ├── lora_single_gpu/
-│   ├── pretrain.sh: 基于 LoRA 进行预训练
+│   ├── pretrain.sh: 基于 LoRA 进行增量预训练
 │   ├── sft.sh: 基于 LoRA 进行指令监督微调
 │   ├── reward.sh: 基于 LoRA 进行奖励模型训练
 │   ├── ppo.sh: 基于 LoRA 进行 PPO 训练
@@ -18,7 +18,8 @@ examples/
 │   └── aqlm.sh: 基于 QLoRA 微调 2 比特 AQLM 模型
 ├── lora_multi_gpu/
 │   ├── single_node.sh: 使用 Accelerate 进行单节点 LoRA 训练
-│   └── multi_node.sh: 使用 Accelerate 进行多节点 LoRA 训练
+│   ├── multi_node.sh: 使用 Accelerate 进行多节点 LoRA 训练
+│   └── ds_zero3.sh: 使用 DeepSpeed ZeRO-3 进行 LoRA 训练
 ├── full_multi_gpu/
 │   ├── single_node.sh: 使用 DeepSpeed 进行单节点全量训练
 │   ├── multi_node.sh: 使用 DeepSpeed 进行多节点全量训练
@@ -34,8 +35,12 @@ examples/
 └── extras/
     ├── galore/
     │   └── sft.sh: 使用 GaLore 训练模型
+    ├── badam/
+    │   └── sft.sh: 使用 BAdam 训练模型
     ├── loraplus/
     │   └── sft.sh: 使用 LoRA+ 训练模型
+    ├── mod/
+    │   └── sft.sh: 使用深度混合训练模型
     ├── llama_pro/
     │   ├── expand.sh: 扩展模型中的层
     │   └── sft.sh: 训练扩展后的模型
