@@ -2,13 +2,13 @@ WANDB_DISABLED=1 NCCL_P2P_DISABLE=1 NCCL_IB_DISABLE=1 deepspeed --num_gpus 2 --m
     --stage sft \
     --do_train \
     --deepspeed /workspace/projects/LLaMA-Factory/examples/deepspeed/ds_z3_config.json \
-    --model_name_or_path /workspace/models/huggingface/Meta-Llama-3-8B-Instruct \
+    --model_name_or_path /workspace/models/huggingface/chatglm3-6b-32k \
     --dataset alpaca_gpt4_zh \
     --dataset_dir /workspace/projects/LLaMA-Factory/data \
-    --template llama3 \
+    --template chatglm3 \
     --finetuning_type lora \
-    --lora_target q_proj,v_proj	 \
-    --output_dir /workspace/models/huggingface/llama3_exp_sft_lora_llamafactory \
+    --lora_target query_key_value	 \
+    --output_dir /workspace/models/huggingface/chatglm32k_exp_sft_lora_llamafactory \
     --overwrite_cache \
     --overwrite_output_dir \
     --cutoff_len 1024 \
