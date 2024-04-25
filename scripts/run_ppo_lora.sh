@@ -3,25 +3,30 @@ ps aux | grep "stage ppo" | awk '{print $2}' | xargs -i kill -9 {}
 WANDB_DISABLED=1 NCCL_P2P_DISABLE=1 NCCL_IB_DISABLE=1 deepspeed --num_gpus 2 --master_port=9527 /workspace/projects/LLaMA-Factory/src/train_bash.py \
     --stage ppo \
     --do_train \
-    --deepspeed /workspace/projects/LLaMA-Factory/config/ds_config.json \
+    --deepspeed /workspace/projects/LLaMA-Factory/examples/deepspeed/ds_z3_offload_config.json \
     --model_name_or_path /workspace/models/huggingface/chatglm3-6b \
-    --adapter_name_or_path /workspace/models/huggingface/chatglm3-6b_exp_sft_lora_llamafactory \
+    --adapter_name_or_path /workspace/models/huggingface/chatglm32k_exp_sft_lora_llamafactory \
     --create_new_adapter \
     --dataset alpaca_gpt4_zh \
     --dataset_dir /workspace/projects/LLaMA-Factory/data \
     --template chatglm3 \
     --finetuning_type lora \
     --lora_target query_key_value \
-    --reward_model /workspace/models/huggingface/chatglm3-6b_exp_rm_lora_llamafactory \
+    --reward_model /workspace/models/huggingface/chatglm32k_rm_sft_lora_llamafactory/checkpoint-5 \
     --output_dir /workspace/models/huggingface/chatglm3-6b_exp_ppo_lora_llamafactory \
+    --overwrite_cache \
+    --overwrite_output_dir \
+    --cutoff_len 512 \
+    --preprocessing_num_workers 4 \
     --per_device_train_batch_size 2 \
-    --gradient_accumulation_steps 4 \
+    --gradient_accumulation_steps 8 \
     --lr_scheduler_type cosine \
-    --top_k 0 \
-    --top_p 0.9 \
     --logging_steps 10 \
     --save_steps 1000 \
     --learning_rate 1e-5 \
     --num_train_epochs 1.0 \
+    --max_samples 1000 \
+    --top_k 0 \
+    --top_p 0.9 \
     --plot_loss \
     --fp16

@@ -24,11 +24,11 @@ WANDB_DISABLED=1 NCCL_P2P_DISABLE=1 NCCL_IB_DISABLE=1 deepspeed --num_gpus 1 --m
     --lr_scheduler_type cosine \
     --logging_steps 10 \
     --warmup_steps 20 \
-    --save_steps 5 \
-    --eval_steps 20 \
+    --save_steps 200 \
+    --eval_steps 100 \
     --evaluation_strategy steps \
     --learning_rate 1e-5 \
-    --num_train_epochs 2.0 \
+    --num_train_epochs 1.0 \
     --max_samples 5000 \
     --val_size 0.1 \
     --plot_loss \

@@ -127,7 +127,7 @@
             "justMyCode": false,
             "args": [
                 "--master_port",
-                "9527",
+                "9529",
                 "/workspace/projects/LLaMA-Factory/src/train_bash.py",
                 "--stage",
                 "sft",
