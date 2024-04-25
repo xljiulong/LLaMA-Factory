@@ -3,7 +3,7 @@ ps aux | grep "stage ppo" | awk '{print $2}' | xargs -i kill -9 {}
 WANDB_DISABLED=1 NCCL_P2P_DISABLE=1 NCCL_IB_DISABLE=1 deepspeed --num_gpus 2 --master_port=9527 /workspace/projects/LLaMA-Factory/src/train_bash.py \
     --stage ppo \
     --do_train \
-    --deepspeed /workspace/projects/LLaMA-Factory/examples/deepspeed/ds_z3_offload_config.json \
+    --deepspeed /workspace/projects/LLaMA-Factory/examples/deepspeed/ds_z2_config.json \
     --model_name_or_path /workspace/models/huggingface/chatglm3-6b \
     --adapter_name_or_path /workspace/models/huggingface/chatglm32k_exp_sft_lora_llamafactory \
     --create_new_adapter \
@@ -12,7 +12,7 @@ WANDB_DISABLED=1 NCCL_P2P_DISABLE=1 NCCL_IB_DISABLE=1 deepspeed --num_gpus 2 --m
     --template chatglm3 \
     --finetuning_type lora \
     --lora_target query_key_value \
-    --reward_model /workspace/models/huggingface/chatglm32k_rm_sft_lora_llamafactory/checkpoint-5 \
+    --reward_model  /workspace/models/huggingface/chatglm32k_rm_sft_lora_llamafactory \
     --output_dir /workspace/models/huggingface/chatglm3-6b_exp_ppo_lora_llamafactory \
     --overwrite_cache \
     --overwrite_output_dir \
