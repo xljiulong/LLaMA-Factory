@@ -147,7 +147,7 @@
                 "--lora_target",
                 "query_key_value",
                 "--output_dir",
-                "/workspace/models/huggingface/chatglm3-6b_check_llamafactory",
+                "/workspace/models/huggingface/chatglm3-6b_debug_llamafactory",
                 "--overwrite_cache",
                 "--overwrite_output_dir",
                 "--cutoff_len",
@@ -182,7 +182,7 @@
                 "--plot_loss",
                 "--fp16"
             ],
-            "env": {"CUDA_VISIBLE_DEVICES":"0", "NCCL_P2P_DISABLE":"1", "NCCL_IB_DISABLE":"1", "WANDB_DISABLED":"1"}
+            "env": {"CUDA_VISIBLE_DEVICES":"1", "NCCL_P2P_DISABLE":"1", "NCCL_IB_DISABLE":"1", "WANDB_DISABLED":"1"}
         },
         {
             "name": "Python: Current File",

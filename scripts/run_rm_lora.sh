@@ -1,6 +1,7 @@
-ps aux | grep "stage rm" | awk '{print $2}' | xargs -i kill -9 {}
+ps aux | grep "train_bash" | awk '{print $2}' | xargs -i kill -9 {}
+export CUDA_VISIBLE_DEVICES=0
 
-WANDB_DISABLED=1 NCCL_P2P_DISABLE=1 NCCL_IB_DISABLE=1 deepspeed --num_gpus 2 --master_port=9527 /workspace/projects/LLaMA-Factory/src/train_bash.py \
+WANDB_DISABLED=1 NCCL_P2P_DISABLE=1 NCCL_IB_DISABLE=1 deepspeed --num_gpus 1 --master_port=9527 /workspace/projects/LLaMA-Factory/src/train_bash.py \
     --stage rm \
     --do_train \
     --deepspeed /workspace/projects/LLaMA-Factory/examples/deepspeed/ds_z3_offload_config.json \
@@ -23,12 +24,13 @@ WANDB_DISABLED=1 NCCL_P2P_DISABLE=1 NCCL_IB_DISABLE=1 deepspeed --num_gpus 2 --m
     --lr_scheduler_type cosine \
     --logging_steps 10 \
     --warmup_steps 20 \
-    --save_steps 100 \
-    --eval_steps 100 \
+    --save_steps 5 \
+    --eval_steps 20 \
     --evaluation_strategy steps \
     --learning_rate 1e-5 \
     --num_train_epochs 2.0 \
     --max_samples 5000 \
     --val_size 0.1 \
     --plot_loss \
+    --save_safetensors False \
     --fp16
