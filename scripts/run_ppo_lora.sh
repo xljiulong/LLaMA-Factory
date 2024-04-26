@@ -1,4 +1,4 @@
-ps aux | grep "stage ppo" | awk '{print $2}' | xargs -i kill -9 {}
+ps aux | grep "python" | awk '{print $2}' | xargs -i kill -9 {}
 
 WANDB_DISABLED=1 NCCL_P2P_DISABLE=1 NCCL_IB_DISABLE=1 deepspeed --num_gpus 2 --master_port=9527 /workspace/projects/LLaMA-Factory/src/train_bash.py \
     --stage ppo \
