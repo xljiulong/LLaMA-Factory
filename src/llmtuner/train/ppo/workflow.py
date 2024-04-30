@@ -34,7 +34,7 @@ def run_ppo(
     tokenizer.padding_side = "left"  # use left-padding in generation while using right-padding in training
     data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
 
-    # Create reference model and reward model
+    # Create reference model and reward model # TODO confirm more effective methods
     ref_model = create_ref_model(model_args, finetuning_args, add_valuehead=True)
     reward_model = create_reward_model(model, model_args, finetuning_args)
 
