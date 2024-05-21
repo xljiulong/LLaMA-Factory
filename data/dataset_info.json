@@ -1,4 +1,8 @@
 {
+  "pdf_corpus": {
+    "file_name": "pdf_corpus.json",
+    "file_sha1": "c08f9ca45aae9bdff2b041a90b3990b40f14b419"
+  },
   "alpaca_en": {
     "file_name": "alpaca_data_en_52k.json",
     "file_sha1": "607f94a7f581341e59685aef32f531095232cf23"
