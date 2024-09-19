@@ -16,9 +16,3 @@ services:
     volumes:
       # - /home/zhangjl19/models/huggingface:/root/.cache/huggingface/
       - /home/zhangjl/snlp:/workspace
-    networks:
-      - test-net
-      
-networks:
-  test-net:
-    external: true
