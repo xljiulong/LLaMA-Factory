@@ -3,7 +3,7 @@ services:
   llama-factory:
     build:
       context: ../../
-      dockerfile: docker-cuda-12.2/dockerfile
+      dockerfile: docker/docker-cuda-12.2/dockerfile
     image: llama_factory:0.0.1
     runtime: nvidia
     container_name: llama_factory

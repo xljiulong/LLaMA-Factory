@@ -3,8 +3,8 @@ FROM pytorch/pytorch:2.4.1-cuda12.4-cudnn9-devel
 ARG DEBIAN_FRONTEND=noninteractive
 
 LABEL maintainer="zhang.jiulong1@byd.com"
-LABEL version = "torch2.4.1_cuda12.4"
-LABEL description = "torch2.4.1_cuda12.4-runtime devel environment"
+LABEL version="torch2.4.1_cuda12.4"
+LABEL description="torch2.4.1_cuda12.4-runtime devel environment"
 
 WORKDIR /workspace
 COPY requirements.txt /tmp/requirements.txt
