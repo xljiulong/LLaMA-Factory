@@ -15,4 +15,7 @@ services:
     shm_size: 40G
     volumes:
       # - /home/zhangjl19/models/huggingface:/root/.cache/huggingface/
-      - /home/zhangjl/snlp:/workspace
+      - /home/zhangjl/workspace:/workspace
+      - /home/zhangjl/workspace/softs/.vscode-server/:/root/.vscode-server
+      - /home/zhangjl19/.ssh/authorized_keys:/root/.ssh/authorized_keys
+
